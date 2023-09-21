@@ -1,3 +1,6 @@
+## Pastors Line - React developer test
+
+### `IT RUNS ON NODE VERSION 14`
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -6,65 +9,106 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
+### `npm install`
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:30080](http://localhost:30080) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
+## Test Desctiption
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This test is intended to check you are using the best practices and you know how to use libraries we are using. This is a small task, but please think about it as a part of something bigger.
 
-### `npm run build`
+Please create a public repository on your Github or Bitbucket account and push the code there. Use branch /feature/react-dev-test and merge it to master via Pull Request.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Task description
+The main screen should have two buttons (Button A and Button B described below) centered vertically and horizontally with a margin between.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Clicking on Button A should open a Modal A. Clicking on Button B should open a Modal B.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Both modals should have three buttons:
 
-### `npm run eject`
+- Modal Button A - labeled ‘All Contacts’, switching to Modal A
+- Modal Button B - labeled ‘US Contacts’, switching to Modal B
+- Modal Button C - labeled ‘Close’, closing modals
+and a checkbox in a footer, LHS:
+- Checkbox A - labeled ‘Only even’, when checked, only contacts with even ID (ex. 2, 4, 6...) should be displayed.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+In Modal A should be displayed (from API) contacts from all countries.
+In Modal B should be displayed (from API) contacts only from US.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Clicking on the contact items in modals should open a next modal (Modal C) with few contact details, no matter what.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Opening Modals A and B should change the URL of the page.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Opening Modal C should NOT change the URL.
 
-## Learn More
+Button A and Modal Button A should have a color: #46139f
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Button B and Modal Button B should have a color: #ff7f50
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Button C should have a white background and border #46139f (same as the background of Button A)
 
-### Code Splitting
+Modals A and B should have a search box to filter contacts (use API param). Contacts should be filtered while typing in a search input (with a small delay) and immediately on hitting the Enter key.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+Lists of contacts should display only the first page (API param, page=1) after scrolling to bottom of modal load next page (infinity scroll).
 
-### Analyzing the Bundle Size
+### Part of our stack (npm)
+- react (v16)
+- axios
+- bootstrap (v4)
+- node-sass
+- react-redux
+- redux (v4)
+- react-custom-scrollbars
+- reselect
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Contacts API
+GET https://api.dev.pastorsline.com/api/contacts.json
+Authorization via header:
+Authorization: Bearer token
 
-### Making a Progressive Web App
+CORS is allowing only pages at http://127.0.0.1:30080
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Params:
+- companyId - use 171
+- query - to filter by names and number
+- page - pagination
+- countryId - to filter by country. The US has a 226 ID.
+- add noGroupDuplicates = 1 
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Example of result:
+```
+{
+    "total": 10, // total amount of found contacts
+    "contacts_ids": [ // this a list of IDs of found contacts
+        745450,
+        502931,
+        (...)
+    ],
+    "contacts": {  // this is a data of found contacts
+        "745450": {
+            "id": 745450,
+            "first_name": "Test",
+            "last_name": "1",
+            "email": null,
+            "phone_number": "9000000001",
+            "country_id": 226,
+            (...)
+        },
+        "502931": {
+            "id": 502931,
+            "first_name": "Test",
+            "last_name": "2",
+            "email": "",
+            "phone_number": "9000000002",
+            "country_id": 226,
+            (...)
+        },
+        (...)
+    }
+}
+```
